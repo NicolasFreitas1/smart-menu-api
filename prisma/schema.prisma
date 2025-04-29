@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  DELIVERED
+  CANCELED
+}
+
+model User {
+  id           String   @id @default(uuid()) @map("id_user") @db.Uuid
+  name         String   @map("nm_user") @db.VarChar(250)
+  email        String   @unique @map("ds_email") @db.VarChar(150)
+  password     String   @map("vl_password") @db.VarChar(250)
+  isAdmin      Boolean  @default(false) @map("bl_is_admin")
+  restaurantId String   @map("id_restaurant") @db.Uuid
+  createdAt    DateTime @default(now()) @map("dt_created")
+  updatedAt    DateTime @updatedAt @map("dt_updated")
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+
+  @@map("users")
+}
+
+model Address {
+  id        String   @id @default(uuid()) @map("id_address") @db.Uuid
+  cep       String   @map("vl_cep") @db.VarChar(15)
+  street    String   @map("ds_street") @db.VarChar(250)
+  number    String?  @map("vl_number") @db.VarChar(10)
+  city      String   @map("nm_city") @db.VarChar(100)
+  state     String   @map("nm_state") @db.VarChar(100)
+  country   String   @map("nm_country") @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("dt_created")
+  updatedAt DateTime @updatedAt @map("dt_updated")
+
+  restaurants Restaurant[]
+
+  @@map("addresses")
+}
+
+model Restaurant {
+  id        String   @id @default(uuid()) @map("id_restaurant") @db.Uuid
+  name      String   @map("nm_restaurant") @db.VarChar(250)
+  addressId String   @map("id_address") @db.Uuid
+  createdAt DateTime @default(now()) @map("dt_created")
+  updatedAt DateTime @updatedAt @map("dt_updated")
+
+  address Address @relation(fields: [addressId], references: [id])
+  users   User[]
+  orders  Order[]
+  dishes  Dish[]
+
+  @@map("restaurants")
+}
+
+model Costumer {
+  id        String   @id @default(uuid()) @map("id_costumer") @db.Uuid
+  name      String   @map("nm_costumer") @db.VarChar(250)
+  email     String   @unique @map("vl_email") @db.VarChar(150)
+  createdAt DateTime @default(now()) @map("dt_created")
+  updatedAt DateTime @updatedAt @map("dt_updated")
+
+  orders Order[]
+
+  @@map("costumers")
+}
+
+model Order {
+  id           String      @id @default(uuid()) @map("id_order") @db.Uuid
+  tableNumber  Int?        @map("vl_table_number")
+  observations String?     @map("ds_observations") @db.Text
+  costumerId   String?     @map("id_costumer") @db.Uuid
+  restaurantId String      @map("id_restaurant") @db.Uuid
+  status       OrderStatus @default(PENDING) @map("vl_status")
+  createdAt    DateTime    @default(now()) @map("dt_created")
+  updatedAt    DateTime    @updatedAt @map("dt_updated")
+
+  costumer   Costumer?   @relation(fields: [costumerId], references: [id])
+  restaurant Restaurant  @relation(fields: [restaurantId], references: [id])
+  itens      OrderItem[]
+
+  @@map("orders")
+}
+
+model Dish {
+  id           String   @id @default(uuid()) @map("id_dish") @db.Uuid
+  name         String   @map("nm_dish") @db.VarChar(250)
+  description  String   @map("ds_dish") @db.VarChar(500)
+  price        Float    @map("vl_price")
+  restaurantId String   @map("id_restaurant") @db.Uuid
+  createdAt    DateTime @default(now()) @map("dt_created")
+  updatedAt    DateTime @updatedAt @map("dt_updated")
+
+  restaurant Restaurant     @relation(fields: [restaurantId], references: [id])
+  images     DishImage[]
+  categories DishCategory[]
+  orders     OrderItem[]
+
+  @@map("dishes")
+}
+
+model DishImage {
+  id        String   @id @default(uuid()) @map("id_dish_image") @db.Uuid
+  imagePath String   @map("vl_image_path") @db.Text
+  dishId    String   @map("id_dish") @db.Uuid
+  createdAt DateTime @default(now()) @map("dt_created")
+  updatedAt DateTime @updatedAt @map("dt_updated")
+
+  dish Dish @relation(fields: [dishId], references: [id])
+
+  @@map("dish_images")
+}
+
+model Category {
+  id        String   @id @default(uuid()) @map("id_category") @db.Uuid
+  name      String   @map("nm_category") @db.VarChar(250)
+  createdAt DateTime @default(now()) @map("dt_created")
+  updatedAt DateTime @updatedAt @map("dt_updated")
+
+  dishes DishCategory[]
+
+  @@map("categories")
+}
+
+model DishCategory {
+  id         String   @id @default(uuid()) @map("id_dish_category") @db.Uuid
+  dishId     String   @map("id_dish") @db.Uuid
+  categoryId String   @map("id_category") @db.Uuid
+  createdAt  DateTime @default(now()) @map("dt_created")
+  updatedAt  DateTime @updatedAt @map("dt_updated")
+
+  dish     Dish     @relation(fields: [dishId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([dishId, categoryId], name: "unique_dish_category")
+  @@map("dish_categories")
+}
+
+model OrderItem {
+  id        String   @id @default(uuid()) @map("id_order_item") @db.Uuid
+  orderId   String   @map("id_order") @db.Uuid
+  dishId    String   @map("id_dish") @db.Uuid
+  quantity  Int      @map("vl_quantity")
+  createdAt DateTime @default(now()) @map("dt_created")
+  updatedAt DateTime @updatedAt @map("dt_updated")
+
+  order Order @relation(fields: [orderId], references: [id])
+  dish  Dish  @relation(fields: [dishId], references: [id])
+
+  @@map("order_items")
+}
