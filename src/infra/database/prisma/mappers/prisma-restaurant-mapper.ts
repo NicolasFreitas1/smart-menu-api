@@ -1,6 +1,6 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Restaurant } from '@/domain/smart-menu/enterprise/entities/restaurant'
-import { Prisma, Restaurant as PrismaRestaurant } from 'generated/prisma'
+import { Prisma, Restaurant as PrismaRestaurant } from '@prisma/client'
 
 export class PrismaRestaurantMapper {
   static toDomain(raw: PrismaRestaurant): Restaurant {

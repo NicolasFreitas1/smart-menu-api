@@ -79,6 +79,7 @@ export class PrismaAddressesRepository implements AddressesRepository {
       data,
     })
   }
+
   async delete(address: Address): Promise<void> {
     await this.prisma.address.delete({
       where: {

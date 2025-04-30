@@ -32,6 +32,7 @@ export class PrismaRestaurantsRepository implements RestaurantsRepository {
       perPage,
     }
   }
+
   async findById(id: string): Promise<Restaurant | null> {
     const restaurant = await this.prisma.restaurant.findUnique({
       where: {
@@ -64,6 +65,7 @@ export class PrismaRestaurantsRepository implements RestaurantsRepository {
       data,
     })
   }
+
   async delete(restaurant: Restaurant): Promise<void> {
     await this.prisma.restaurant.delete({
       where: {

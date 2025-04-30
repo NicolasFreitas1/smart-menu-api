@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma.service'
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper'
 import { FilterUser } from '@/domain/smart-menu/application/use-cases/user/filter/filter-user'
 import { DataWithPagination } from '@/core/repositories/data-with-pagination'
-import { Prisma } from 'generated/prisma'
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
