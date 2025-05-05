@@ -1,10 +1,10 @@
-import { DataWithPagination } from '@/core/repositories/data-with-pagination'
-import { PaginationParams } from '@/core/repositories/pagination-params'
-import { DishesRepository } from '@/domain/smart-menu/application/repositories/dishes-repository'
-import { Dish } from '@/domain/smart-menu/enterprise/entities/dish'
-import { Injectable } from '@nestjs/common'
-import { PrismaDishMapper } from '../mappers/prisma-dish-mapper'
-import { PrismaService } from '../prisma.service'
+import { DataWithPagination } from '@/core/repositories/data-with-pagination';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { DishesRepository } from '@/domain/smart-menu/application/repositories/dishes-repository';
+import { Dish } from '@/domain/smart-menu/enterprise/entities/dish';
+import { Injectable } from '@nestjs/common';
+import { PrismaDishMapper } from '../mappers/prisma-dish-mapper';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PrismaDishesRepository implements DishesRepository {
@@ -14,18 +14,15 @@ export class PrismaDishesRepository implements DishesRepository {
     page,
     perPage,
   }: PaginationParams): Promise<DataWithPagination<Dish>> {
-    const dishes = await this.prisma.
-    
-    
-    .findMany({
+    const dishes = await this.prisma.dish.findMany({
       take: perPage,
       skip: (page - 1) * perPage,
       orderBy: {
         createdAt: 'desc',
       },
-    })
+    });
 
-    const total = await this.prisma.dish.count()
+    const total = await this.prisma.dish.count();
 
     return {
       data: dishes.map(PrismaDishMapper.toDomain),
@@ -33,7 +30,7 @@ export class PrismaDishesRepository implements DishesRepository {
       totalPages: Math.ceil(total / perPage),
       amount: total,
       perPage,
-    }
+    };
   }
 
   async findById(id: string): Promise<Dish | null> {
@@ -41,32 +38,32 @@ export class PrismaDishesRepository implements DishesRepository {
       where: {
         id,
       },
-    })
+    });
 
     if (!dish) {
-      return null
+      return null;
     }
 
-    return PrismaDishMapper.toDomain(dish)
+    return PrismaDishMapper.toDomain(dish);
   }
 
   async create(dish: Dish): Promise<void> {
-    const data = PrismaDishMapper.toPrisma(dish)
+    const data = PrismaDishMapper.toPrisma(dish);
 
     await this.prisma.dish.create({
       data,
-    })
+    });
   }
 
   async save(dish: Dish): Promise<void> {
-    const data = PrismaDishMapper.toPrisma(dish)
+    const data = PrismaDishMapper.toPrisma(dish);
 
     await this.prisma.dish.update({
       where: {
         id: dish.id.toString(),
       },
       data,
-    })
+    });
   }
 
   async delete(dish: Dish): Promise<void> {
@@ -74,7 +71,7 @@ export class PrismaDishesRepository implements DishesRepository {
       where: {
         id: dish.id.toString(),
       },
-    })
+    });
   }
 
   async findManyByRestaurant(
@@ -90,21 +87,20 @@ export class PrismaDishesRepository implements DishesRepository {
       orderBy: {
         createdAt: 'desc',
       },
-    })
-  
+    });
+
     const total = await this.prisma.dish.count({
       where: {
         restaurantId,
       },
-    })
-  
+    });
+
     return {
       data: dishes.map(PrismaDishMapper.toDomain),
       actualPage: page,
       totalPages: Math.ceil(total / perPage),
       amount: total,
       perPage,
-    }
+    };
   }
-  
 }
