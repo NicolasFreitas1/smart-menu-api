@@ -1,0 +1,28 @@
+services:
+  app:
+    image: smart-menu-api
+    container_name: smart-menu-api
+    build:
+      context: ../../
+      dockerfile: docker/development/Dockerfile
+    restart: always
+    ports:
+      - '5000:5000'
+    networks:
+      - default_net
+    depends_on:
+      - db
+    # command: bash -c "npm run migration:run; npm run seed:run;"
+  db:
+   container_name: smart-menu-db
+   image: bitnami/postgresql
+   ports:
+    - 5433:5432
+   environment:
+    - POSTGRESQL_USERNAME=docker
+    - POSTGRESQL_PASSWORD=docker
+    - POSTGRESQL_DATABASE=smart-menu-db
+
+networks:
+  default_net:
+    driver: bridge
