@@ -9,12 +9,14 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { RestaurantPresenter } from '../../presenters/restaurant-presenter'
+import { Public } from '@/infra/auth/public'
 
 @Controller('restaurants/:restaurantId')
 export class GetRestaurantByIdController {
   constructor(private getRestaurantByIdUseCase: GetRestaurantByIdUseCase) {}
 
   @Get()
+  @Public()
   async handle(@Param('restaurantId', ParseUUIDPipe) restaurantId: string) {
     const result = await this.getRestaurantByIdUseCase.execute({
       restaurantId,
