@@ -8,6 +8,7 @@ import {
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { DishWithPaginationPresenter } from '../../presenters/dish-with-pagination-presenter'
+import { Public } from '@/infra/auth/public'
 
 const pageQueryParamSchema = z
   .string()
@@ -36,6 +37,7 @@ export class ListDishesController {
   constructor(private listDishesUseCase: ListDishesUseCase) {}
 
   @Get()
+  @Public()
   async handle(
     @Query('page', queryValidationPipe) page: pageQueryParamSchema,
     @Query('per_page', sizeValidationPipe) perPage: sizeQueryParamSchema,

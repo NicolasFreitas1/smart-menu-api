@@ -16,7 +16,7 @@ async function main() {
   })
   const restaurant = await prisma.restaurant.create({
     data: {
-      name: 'restaurant-test',
+      name: 'Moltalccino',
       addressId: address.id,
     },
   })
@@ -29,6 +29,41 @@ async function main() {
       isAdmin: true,
       restaurantId: restaurant.id,
     },
+  })
+
+  await prisma.dish.createMany({
+    data: [
+      {
+        name: 'Lasanha',
+        description: 'Deliciosa lasanha caseira com molho de tomate e queijo.',
+        price: 25.0,
+        restaurantId: restaurant.id,
+      },
+      {
+        name: 'Picanha Grelhada',
+        description: 'Picanha suculenta grelhada no ponto perfeito.',
+        price: 45.0,
+        restaurantId: restaurant.id,
+      },
+      {
+        name: 'Salada Caesar',
+        description: 'Clássica salada Caesar com frango e parmesão.',
+        price: 18.0,
+        restaurantId: restaurant.id,
+      },
+      {
+        name: 'Petit Gateau',
+        description: 'Bolo de chocolate com recheio cremoso e sorvete.',
+        price: 22.0,
+        restaurantId: restaurant.id,
+      },
+      {
+        name: 'Spaghetti à Bolonhesa',
+        description: 'Massa com molho de carne moída ao estilo italiano.',
+        price: 23.0,
+        restaurantId: restaurant.id,
+      },
+    ],
   })
 }
 
