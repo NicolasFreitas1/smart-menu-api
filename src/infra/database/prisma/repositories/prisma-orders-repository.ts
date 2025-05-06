@@ -78,7 +78,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
     { page, perPage }: PaginationParams,
     restaurantId: string,
   ): Promise<DataWithPagination<Order>> {
-    const orderes = await this.prisma.order.findMany({
+    const orders = await this.prisma.order.findMany({
       where: {
         restaurantId,
       },
@@ -96,7 +96,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
     })
 
     return {
-      data: orderes.map(PrismaOrderMapper.toDomain),
+      data: orders.map(PrismaOrderMapper.toDomain),
       actualPage: page,
       totalPages: Math.ceil(total / perPage),
       amount: total,

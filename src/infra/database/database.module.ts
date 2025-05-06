@@ -8,6 +8,10 @@ import { UsersRepository } from '@/domain/smart-menu/application/repositories/us
 import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository'
 import { DishesRepository } from '@/domain/smart-menu/application/repositories/dishes-repository'
 import { PrismaDishesRepository } from './prisma/repositories/prisma-dishes-repository'
+import { OrderItensRepository } from '@/domain/smart-menu/application/repositories/order-itens-repository'
+import { PrismaOrderItensRepository } from './prisma/repositories/prisma-order-items-repository'
+import { OrdersRepository } from '@/domain/smart-menu/application/repositories/orders-repository'
+import { PrismaOrdersRepository } from './prisma/repositories/prisma-orders-repository'
 
 @Module({
   providers: [
@@ -28,6 +32,14 @@ import { PrismaDishesRepository } from './prisma/repositories/prisma-dishes-repo
       provide: DishesRepository,
       useClass: PrismaDishesRepository,
     },
+    {
+      provide: OrdersRepository,
+      useClass: PrismaOrdersRepository,
+    },
+    {
+      provide: OrderItensRepository,
+      useClass: PrismaOrderItensRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -35,6 +47,8 @@ import { PrismaDishesRepository } from './prisma/repositories/prisma-dishes-repo
     AddressesRepository,
     UsersRepository,
     DishesRepository,
+    OrdersRepository,
+    OrderItensRepository,
   ],
 })
 export class DatabaseModule {}
