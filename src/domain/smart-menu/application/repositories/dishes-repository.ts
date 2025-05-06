@@ -8,6 +8,7 @@ export abstract class DishesRepository {
     params: PaginationParams,
     restaurantId: string,
   ): Promise<DataWithPagination<Dish>>
+
   abstract findById(id: string): Promise<Dish | null>
   abstract create(dish: Dish): Promise<void>
   abstract save(dish: Dish): Promise<void>

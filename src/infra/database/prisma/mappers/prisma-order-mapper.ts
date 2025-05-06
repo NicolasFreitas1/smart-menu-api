@@ -1,38 +1,34 @@
-import { Order } from "../../domain/smart-menu/enterprise/entities/order";
-import { OrderItem } from "../../domain/smart-menu/enterprise/entities/order-item";
-import { Prisma, Order as PrismaOrder, OrderItem as PrismaOrderItem } from "@prisma/client";
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Order } from '@/domain/smart-menu/enterprise/entities/order'
+import { Prisma, Order as PrismaOrder } from '@prisma/client'
 
 export class PrismaOrderMapper {
-  static toDomain(raw: PrismaOrder & { itens: PrismaOrderItem[] }): Order {
-    return Order.create({
-      id: raw.id_order,
-      tableNumber: raw.vl_table_number,
-      observations: raw.ds_observations,
-      status: raw.vl_status,
-      customerId: raw.id_costumer,
-      restaurantId: raw.id_restaurant,
-      createdAt: raw.dt_created,
-      updatedAt: raw.dt_updated,
-    });
+  static toDomain(raw: PrismaOrder): Order {
+    return Order.create(
+      {
+        tableNumber: raw.tableNumber,
+        observations: raw.observations,
+        status: raw.status,
+        costumerId: raw.costumerId
+          ? new UniqueEntityId(raw.costumerId)
+          : undefined,
+        restaurantId: new UniqueEntityId(raw.restaurantId),
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
+      },
+      new UniqueEntityId(raw.id),
+    )
   }
 
-  static toPrisma(order: Order, items: OrderItem[]): Prisma.OrderCreateInput {
+  static toPrisma(order: Order): Prisma.OrderUncheckedCreateInput {
     return {
-      id_order: order.id.toString(),
-      vl_table_number: order.tableNumber,
-      ds_observations: order.observations,
-      vl_status: order.status,
-      dt_created: order.createdAt,
-      dt_updated: order.updatedAt,
-      costumer: order.customerId ? { connect: { id_costumer: order.customerId } } : undefined,
-      restaurant: { connect: { id_restaurant: order.restaurantId } },
-      itens: {
-        create: items.map((item) => ({
-          id_order_item: item.id.toString(),
-          vl_quantity: item.quantity,
-          dish: { connect: { id_dish: item.dishId.toString() } },
-        })),
-      },
-    };
+      id: order.id.toString(),
+      restaurantId: order.restaurantId.toString(),
+      costumerId: order.costumerId?.toString(),
+      createdAt: order.createdAt,
+      observations: order.observations,
+      status: order.status,
+      tableNumber: order.tableNumber,
+    }
   }
 }
