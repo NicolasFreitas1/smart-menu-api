@@ -1,6 +1,6 @@
-import { DataWithPagination } from '@/core/repositories/data-with-pagination';
-import { Dish } from '@/domain/smart-menu/enterprise/entities/dish';
-import { DishPresenter } from './dish-presenter';
+import { DataWithPagination } from '@/core/repositories/data-with-pagination'
+import { Dish } from '@/domain/smart-menu/enterprise/entities/dish'
+import { DishPresenter } from './dish-presenter'
 
 export class DishWithPaginationPresenter {
   static toHTTP(dish: DataWithPagination<Dish>) {
@@ -10,6 +10,6 @@ export class DishWithPaginationPresenter {
       totalPages: dish.totalPages,
       actualPage: dish.actualPage,
       perPage: dish.perPage,
-    };
+    }
   }
 }

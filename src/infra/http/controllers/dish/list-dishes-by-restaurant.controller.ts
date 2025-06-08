@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
-import { DishWithPaginationPresenter } from '../../presenters/dish-with-pagination-presenter'
+import { DishWithCategoriesWithPaginationPresenter } from '../../presenters/dish-with-categories-with-pagination-presenter'
 
 const pageQueryParamSchema = z
   .string()
@@ -43,12 +43,14 @@ export class ListDishesByRestaurantController {
   async handle(
     @Query('page', queryValidationPipe) page: pageQueryParamSchema,
     @Query('per_page', sizeValidationPipe) perPage: sizeQueryParamSchema,
+    @Query('categoryFilter') categoryFilter: string,
     @Param('restaurantId', ParseUUIDPipe) restaurantId: string,
   ) {
     const result = await this.listDishesUseCase.execute({
       restaurantId,
       page,
       perPage,
+      categoryFilter,
     })
 
     if (result.isLeft()) {
@@ -59,6 +61,6 @@ export class ListDishesByRestaurantController {
 
     const dishes = result.value.dishes
 
-    return DishWithPaginationPresenter.toHTTP(dishes)
+    return DishWithCategoriesWithPaginationPresenter.toHTTP(dishes)
   }
 }

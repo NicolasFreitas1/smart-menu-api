@@ -1,19 +1,20 @@
 import { Either, right } from '@/core/either'
+import { DataWithPagination } from '@/core/repositories/data-with-pagination'
+import { DishWithCategories } from '@/domain/smart-menu/enterprise/entities/value-objects/dish-with-categories'
 import { Injectable } from '@nestjs/common'
 import { DishesRepository } from '../../repositories/dishes-repository'
-import { DataWithPagination } from '@/core/repositories/data-with-pagination'
-import { Dish } from '@/domain/smart-menu/enterprise/entities/dish'
 
 interface ListDishesByRestaurantUseCaseRequest {
   restaurantId: string
   page: number
   perPage: number
+  categoryFilter?: string
 }
 
 type ListDishesByRestaurantUseCaseResponse = Either<
   null,
   {
-    dishes: DataWithPagination<Dish>
+    dishes: DataWithPagination<DishWithCategories>
   }
 >
 
@@ -25,14 +26,17 @@ export class ListDishesByRestaurantUseCase {
     page,
     perPage,
     restaurantId,
+    categoryFilter,
   }: ListDishesByRestaurantUseCaseRequest): Promise<ListDishesByRestaurantUseCaseResponse> {
-    const dishes = await this.dishesRepository.findManyByRestaurant(
-      {
-        page,
-        perPage,
-      },
-      restaurantId,
-    )
+    const dishes =
+      await this.dishesRepository.findManyByRestaurantWithCategories(
+        {
+          page,
+          perPage,
+        },
+        restaurantId,
+        categoryFilter,
+      )
 
     return right({ dishes })
   }

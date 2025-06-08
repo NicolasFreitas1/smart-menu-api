@@ -21,13 +21,14 @@ export class CreateDishController {
   @Post()
   @IsAdmin()
   async handle(@Body(bodyValidationPipe) body: CreateDishBodySchema) {
-    const { description, name, price, restaurantId } = body
+    const { description, name, price, restaurantId, categories } = body
 
     const result = await this.createDishUseCase.execute({
       description,
       name,
       price,
       restaurantId,
+      categories,
     })
 
     if (result.isLeft()) {

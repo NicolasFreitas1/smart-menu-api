@@ -2,20 +2,28 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-export interface CategoryProps {
-  name: string
+interface DishCategoryProps {
+  dishId: UniqueEntityId
+  categoryId: UniqueEntityId
   createdAt: Date
   updatedAt?: Date | null
 }
 
-export class Category extends Entity<CategoryProps> {
-  get name() {
-    return this.props.name
+export class DishCategory extends Entity<DishCategoryProps> {
+  get dishId() {
+    return this.props.dishId
   }
 
-  set name(name: string) {
-    this.props.name = name
-    this.touch()
+  set dishId(dishId: UniqueEntityId) {
+    this.props.dishId = dishId
+  }
+
+  get categoryId() {
+    return this.props.categoryId
+  }
+
+  set categoryId(categoryId: UniqueEntityId) {
+    this.props.categoryId = categoryId
   }
 
   get createdAt() {
@@ -31,10 +39,10 @@ export class Category extends Entity<CategoryProps> {
   }
 
   static create(
-    props: Optional<CategoryProps, 'createdAt'>,
+    props: Optional<DishCategoryProps, 'createdAt'>,
     id?: UniqueEntityId,
   ) {
-    const category = new Category(
+    const dishCategory = new DishCategory(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
@@ -42,6 +50,6 @@ export class Category extends Entity<CategoryProps> {
       id,
     )
 
-    return category
+    return dishCategory
   }
 }

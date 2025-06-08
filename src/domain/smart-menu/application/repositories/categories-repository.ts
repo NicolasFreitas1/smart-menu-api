@@ -10,6 +10,8 @@ export abstract class CategoriesRepository {
   abstract findManyWithoutPagination(): Promise<Category[]>
 
   abstract findById(id: string): Promise<Category | null>
+  abstract findByName(name: string): Promise<Category | null>
+  abstract findManyByNames(names: string[]): Promise<Category[]>
   abstract create(category: Category): Promise<void>
   abstract save(category: Category): Promise<void>
   abstract delete(category: Category): Promise<void>

@@ -6,6 +6,7 @@ const createDishBodySchema = z.object({
   name: z.string(),
   price: z.number(),
   restaurantId: z.string().uuid(),
+  categories: z.array(z.string()),
 })
 
 export type CreateDishBodySchema = z.infer<typeof createDishBodySchema>

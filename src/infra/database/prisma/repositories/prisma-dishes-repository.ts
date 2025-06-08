@@ -5,6 +5,9 @@ import { Dish } from '@/domain/smart-menu/enterprise/entities/dish'
 import { Injectable } from '@nestjs/common'
 import { PrismaDishMapper } from '../mappers/prisma-dish-mapper'
 import { PrismaService } from '../prisma.service'
+import { DishWithCategories } from '@/domain/smart-menu/enterprise/entities/value-objects/dish-with-categories'
+import { PrismaDishWithCategoriesMapper } from '../mappers/prisma-dish-with-categories-mapper'
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class PrismaDishesRepository implements DishesRepository {
@@ -77,10 +80,14 @@ export class PrismaDishesRepository implements DishesRepository {
   async findManyByRestaurant(
     { page, perPage }: PaginationParams,
     restaurantId: string,
+    categoryFilter?: string,
   ): Promise<DataWithPagination<Dish>> {
     const dishes = await this.prisma.dish.findMany({
       where: {
         restaurantId,
+        categories: {
+          some: { category: { name: categoryFilter } },
+        },
       },
       take: perPage,
       skip: (page - 1) * perPage,
@@ -97,6 +104,51 @@ export class PrismaDishesRepository implements DishesRepository {
 
     return {
       data: dishes.map(PrismaDishMapper.toDomain),
+      actualPage: page,
+      totalPages: Math.ceil(total / perPage),
+      amount: total,
+      perPage,
+    }
+  }
+
+  async findManyByRestaurantWithCategories(
+    { page, perPage }: PaginationParams,
+    restaurantId: string,
+    categoryFilter?: string,
+  ): Promise<DataWithPagination<DishWithCategories>> {
+    const where: Prisma.DishWhereInput = {
+      restaurantId,
+      ...(categoryFilter && {
+        categories: {
+          some: {
+            category: {
+              name: categoryFilter,
+            },
+          },
+        },
+      }),
+    }
+
+    const dishes = await this.prisma.dish.findMany({
+      where,
+      include: {
+        categories: {
+          include: { category: true },
+        },
+      },
+      take: perPage,
+      skip: (page - 1) * perPage,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    const total = await this.prisma.dish.count({
+      where,
+    })
+
+    return {
+      data: dishes.map(PrismaDishWithCategoriesMapper.toDomain),
       actualPage: page,
       totalPages: Math.ceil(total / perPage),
       amount: total,

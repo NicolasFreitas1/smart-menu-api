@@ -49,6 +49,26 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
     return PrismaCategoryMapper.toDomain(category)
   }
 
+  async findByName(name: string): Promise<Category | null> {
+    const category = await this.prisma.category.findFirst({
+      where: { name },
+    })
+
+    if (!category) return null
+
+    return PrismaCategoryMapper.toDomain(category)
+  }
+
+  async findManyByNames(names: string[]): Promise<Category[]> {
+    const categories = await this.prisma.category.findMany({
+      where: {
+        name: { in: names },
+      },
+    })
+
+    return categories.map(PrismaCategoryMapper.toDomain)
+  }
+
   async create(category: Category): Promise<void> {
     const data = PrismaCategoryMapper.toPrisma(category)
 
