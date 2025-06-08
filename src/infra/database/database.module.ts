@@ -12,6 +12,8 @@ import { OrderItensRepository } from '@/domain/smart-menu/application/repositori
 import { PrismaOrderItensRepository } from './prisma/repositories/prisma-order-items-repository'
 import { OrdersRepository } from '@/domain/smart-menu/application/repositories/orders-repository'
 import { PrismaOrdersRepository } from './prisma/repositories/prisma-orders-repository'
+import { CategoriesRepository } from '@/domain/smart-menu/application/repositories/categories-repository'
+import { PrismaCategoriesRepository } from './prisma/repositories/prisma-categories-repository'
 
 @Module({
   providers: [
@@ -40,6 +42,10 @@ import { PrismaOrdersRepository } from './prisma/repositories/prisma-orders-repo
       provide: OrderItensRepository,
       useClass: PrismaOrderItensRepository,
     },
+    {
+      provide: CategoriesRepository,
+      useClass: PrismaCategoriesRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -49,6 +55,7 @@ import { PrismaOrdersRepository } from './prisma/repositories/prisma-orders-repo
     DishesRepository,
     OrdersRepository,
     OrderItensRepository,
+    CategoriesRepository,
   ],
 })
 export class DatabaseModule {}
