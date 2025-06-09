@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common'
 import { DishPresenter } from '../../presenters/dish-presenter'
 import { Public } from '@/infra/auth/public'
@@ -21,7 +22,7 @@ export class GetRandomDishFromRestaurantController {
   @Public()
   async handle(
     @Param('restaurantId', ParseUUIDPipe) restaurantId: string,
-    @Param('category') category: string,
+    @Query('category') category: string,
   ) {
     const result = await this.getRandomDishFromRestaurantUseCase.execute({
       restaurantId,

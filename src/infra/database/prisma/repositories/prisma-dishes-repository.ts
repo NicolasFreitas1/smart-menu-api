@@ -62,6 +62,7 @@ export class PrismaDishesRepository implements DishesRepository {
         },
       },
     })
+    console.log('🚀 ~ PrismaDishesRepository ~ dishes:', dishes)
 
     if (dishes.length === 0) return null
 
