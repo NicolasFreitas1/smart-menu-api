@@ -7,6 +7,7 @@ export class UserPresenter {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      restaurantId: user.restaurantId.toString(),
       createdAt: user.createdAt,
     }
   }

@@ -5,7 +5,7 @@ import { DishPresenter } from './dish-presenter'
 export class DishWithPaginationPresenter {
   static toHTTP(dish: DataWithPagination<Dish>) {
     return {
-      dishes: dish.data.map(DishPresenter.toHTTP),
+      data: dish.data.map(DishPresenter.toHTTP),
       amount: dish.amount,
       totalPages: dish.totalPages,
       actualPage: dish.actualPage,

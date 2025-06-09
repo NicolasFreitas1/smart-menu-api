@@ -11,6 +11,8 @@ import { DeleteDishUseCase } from '@/domain/smart-menu/application/use-cases/dis
 import { EditDishUseCase } from '@/domain/smart-menu/application/use-cases/dish/edit-dish'
 import { GetDishByIdUseCase } from '@/domain/smart-menu/application/use-cases/dish/get-dish-by-id'
 import { ListDishesUseCase } from '@/domain/smart-menu/application/use-cases/dish/list-dishes'
+import { ListDishesByRestaurantController } from './list-dishes-by-restaurant.controller'
+import { ListDishesByRestaurantUseCase } from '@/domain/smart-menu/application/use-cases/dish/list-dishes-by-restaurant'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -20,6 +22,7 @@ import { ListDishesUseCase } from '@/domain/smart-menu/application/use-cases/dis
     EditDishController,
     GetDishByIdController,
     ListDishesController,
+    ListDishesByRestaurantController,
   ],
   providers: [
     CreateDishUseCase,
@@ -27,6 +30,7 @@ import { ListDishesUseCase } from '@/domain/smart-menu/application/use-cases/dis
     EditDishUseCase,
     GetDishByIdUseCase,
     ListDishesUseCase,
+    ListDishesByRestaurantUseCase,
   ],
 })
 export class DishModule {}
