@@ -136,8 +136,8 @@ model DishCategory {
   createdAt  DateTime @default(now()) @map("dt_created")
   updatedAt  DateTime @updatedAt @map("dt_updated")
 
-  dish     Dish     @relation(fields: [dishId], references: [id])
-  category Category @relation(fields: [categoryId], references: [id])
+  dish     Dish     @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([dishId, categoryId], name: "unique_dish_category")
   @@map("dish_categories")
