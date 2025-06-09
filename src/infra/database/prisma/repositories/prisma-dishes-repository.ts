@@ -50,6 +50,27 @@ export class PrismaDishesRepository implements DishesRepository {
     return PrismaDishMapper.toDomain(dish)
   }
 
+  async findRandomByByRestaurantAndCategory(
+    restaurantId: string,
+    category: string,
+  ): Promise<Dish | null> {
+    const dishes = await this.prisma.dish.findMany({
+      where: {
+        restaurantId,
+        categories: {
+          some: { category: { name: category } },
+        },
+      },
+    })
+
+    if (dishes.length === 0) return null
+
+    const randomIndex = Math.floor(Math.random() * dishes.length)
+    const randomDish = dishes[randomIndex]
+
+    return PrismaDishMapper.toDomain(randomDish)
+  }
+
   async create(dish: Dish): Promise<void> {
     const data = PrismaDishMapper.toPrisma(dish)
 

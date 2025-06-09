@@ -18,6 +18,11 @@ export abstract class DishesRepository {
   ): Promise<DataWithPagination<DishWithCategories>>
 
   abstract findById(id: string): Promise<Dish | null>
+  abstract findRandomByByRestaurantAndCategory(
+    restaurantId: string,
+    category: string,
+  ): Promise<Dish | null>
+
   abstract create(dish: Dish): Promise<void>
   abstract save(dish: Dish): Promise<void>
   abstract delete(dish: Dish): Promise<void>

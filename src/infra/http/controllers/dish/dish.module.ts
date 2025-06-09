@@ -13,6 +13,8 @@ import { GetDishByIdUseCase } from '@/domain/smart-menu/application/use-cases/di
 import { ListDishesUseCase } from '@/domain/smart-menu/application/use-cases/dish/list-dishes'
 import { ListDishesByRestaurantController } from './list-dishes-by-restaurant.controller'
 import { ListDishesByRestaurantUseCase } from '@/domain/smart-menu/application/use-cases/dish/list-dishes-by-restaurant'
+import { GetRandomDishFromRestaurantController } from './get-random-dish-from-restaurant.controller'
+import { GetRandomDishFromRestaurantUseCase } from '@/domain/smart-menu/application/use-cases/dish/get-random-dish-from-restaurant'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -23,6 +25,7 @@ import { ListDishesByRestaurantUseCase } from '@/domain/smart-menu/application/u
     GetDishByIdController,
     ListDishesController,
     ListDishesByRestaurantController,
+    GetRandomDishFromRestaurantController,
   ],
   providers: [
     CreateDishUseCase,
@@ -31,6 +34,7 @@ import { ListDishesByRestaurantUseCase } from '@/domain/smart-menu/application/u
     GetDishByIdUseCase,
     ListDishesUseCase,
     ListDishesByRestaurantUseCase,
+    GetRandomDishFromRestaurantUseCase,
   ],
 })
 export class DishModule {}
