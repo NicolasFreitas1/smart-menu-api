@@ -123,7 +123,8 @@ export class GenerateGeminiAISuggestion implements GenerateDishSuggestion {
         {
           id: string,
           name: string,
-          description: string
+          description: string,
+          price: number,
         }
 
         Apenas um prato por sugestão.
