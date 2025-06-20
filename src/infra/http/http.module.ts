@@ -5,6 +5,7 @@ import { DishModule } from './controllers/dish/dish.module';
 import { OrderModule } from './controllers/order/order.module';
 import { CategoryModule } from './controllers/category/category.module';
 import { SuggestionModule } from './controllers/suggestion/suggestion.module';
+import { HealthModule } from './controllers/health/health.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SuggestionModule } from './controllers/suggestion/suggestion.module';
     OrderModule,
     CategoryModule,
     SuggestionModule,
+    HealthModule,
   ],
 })
 export class HttpModule {}
