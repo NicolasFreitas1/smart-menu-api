@@ -2,8 +2,10 @@ import { DataWithPagination } from '@/core/repositories/data-with-pagination'
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { RestaurantsRepository } from '@/domain/smart-menu/application/repositories/restaurants-repository'
 import { Restaurant } from '@/domain/smart-menu/enterprise/entities/restaurant'
+import { RestaurantWithAddress } from '@/domain/smart-menu/enterprise/entities/value-objects/restaurant-with-address'
 import { Injectable } from '@nestjs/common'
 import { PrismaRestaurantMapper } from '../mappers/prisma-restaurant-mapper'
+import { PrismaRestaurantWithAddressMapper } from '../mappers/prisma-restaurant-with-address-mapper'
 import { PrismaService } from '../prisma.service'
 
 @Injectable()
@@ -33,6 +35,32 @@ export class PrismaRestaurantsRepository implements RestaurantsRepository {
     }
   }
 
+  async findManyWithAddress({
+    page,
+    perPage,
+  }: PaginationParams): Promise<DataWithPagination<RestaurantWithAddress>> {
+    const restaurants = await this.prisma.restaurant.findMany({
+      take: perPage,
+      skip: (page - 1) * perPage,
+      include: {
+        address: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    const total = await this.prisma.restaurant.count()
+
+    return {
+      data: restaurants.map(PrismaRestaurantWithAddressMapper.toDomain),
+      actualPage: page,
+      totalPages: Math.ceil(total / perPage),
+      amount: total,
+      perPage,
+    }
+  }
+
   async findById(id: string): Promise<Restaurant | null> {
     const restaurant = await this.prisma.restaurant.findUnique({
       where: {
@@ -45,6 +73,23 @@ export class PrismaRestaurantsRepository implements RestaurantsRepository {
     }
 
     return PrismaRestaurantMapper.toDomain(restaurant)
+  }
+
+  async findByIdWithAddress(id: string): Promise<RestaurantWithAddress | null> {
+    const restaurant = await this.prisma.restaurant.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        address: true,
+      },
+    })
+
+    if (!restaurant) {
+      return null
+    }
+
+    return PrismaRestaurantWithAddressMapper.toDomain(restaurant)
   }
 
   async create(restaurant: Restaurant): Promise<void> {

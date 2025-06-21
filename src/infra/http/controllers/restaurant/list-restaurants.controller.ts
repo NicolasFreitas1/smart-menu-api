@@ -1,4 +1,5 @@
-import { ListRestaurantsUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/list-restaurants'
+import { ListRestaurantsWithAddressUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/list-restaurants-with-address'
+import { Public } from '@/infra/auth/public'
 import {
   Controller,
   Get,
@@ -7,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
-import { RestaurantWithPaginationPresenter } from '../../presenters/restaurant-with-pagination-presenter'
+import { RestaurantWithAddressPresenter } from '../../presenters/restaurant-with-address-presenter'
 
 const pageQueryParamSchema = z
   .string()
@@ -32,8 +33,11 @@ const sizeValidationPipe = new ZodValidationPipe(sizeQueryParamSchema)
 type sizeQueryParamSchema = z.infer<typeof sizeQueryParamSchema>
 
 @Controller('restaurants')
+@Public()
 export class ListRestaurantsController {
-  constructor(private listRestaurantsUseCase: ListRestaurantsUseCase) {}
+  constructor(
+    private listRestaurantsUseCase: ListRestaurantsWithAddressUseCase,
+  ) {}
 
   @Get()
   async handle(
@@ -53,6 +57,14 @@ export class ListRestaurantsController {
 
     const restaurants = result.value.restaurants
 
-    return RestaurantWithPaginationPresenter.toHTTP(restaurants)
+    return {
+      restaurants: restaurants.data.map(RestaurantWithAddressPresenter.toHTTP),
+      pagination: {
+        page: restaurants.actualPage,
+        perPage: restaurants.perPage,
+        total: restaurants.amount,
+        totalPages: restaurants.totalPages,
+      },
+    }
   }
 }

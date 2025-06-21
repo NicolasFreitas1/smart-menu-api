@@ -259,7 +259,9 @@ pnpm run test:cov
 ### Restaurantes
 
 - `GET /restaurants` - Listar restaurantes
+- `GET /restaurants/with-address` - Listar restaurantes com endereços
 - `GET /restaurants/:id` - Buscar restaurante por ID
+- `GET /restaurants/:id/with-address` - Buscar restaurante por ID com endereço
 - `POST /restaurants` - Criar restaurante
 - `PUT /restaurants/:id` - Editar restaurante
 - `DELETE /restaurants/:id` - Deletar restaurante

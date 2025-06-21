@@ -124,6 +124,70 @@ Authorization: Bearer <token>
 }
 ```
 
+### Listar Restaurantes com Endereços (Novo)
+
+```bash
+GET /restaurants/with-address?page=1&perPage=10
+Authorization: Bearer <token>
+```
+
+**Resposta:**
+
+```json
+{
+  "restaurants": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "name": "Restaurante Italiano",
+      "address": {
+        "id": "550e8400-e29b-41d4-a716-446655440002",
+        "cep": "01234-567",
+        "street": "Rua das Flores",
+        "number": "123",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "Brasil"
+      },
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "perPage": 10,
+    "total": 1,
+    "totalPages": 1
+  }
+}
+```
+
+### Buscar Restaurante por ID com Endereço (Novo)
+
+```bash
+GET /restaurants/550e8400-e29b-41d4-a716-446655440001/with-address
+Authorization: Bearer <token>
+```
+
+**Resposta:**
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440001",
+  "name": "Restaurante Italiano",
+  "address": {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "cep": "01234-567",
+    "street": "Rua das Flores",
+    "number": "123",
+    "city": "São Paulo",
+    "state": "SP",
+    "country": "Brasil"
+  },
+  "createdAt": "2024-01-15T10:30:00Z",
+  "updatedAt": "2024-01-15T10:30:00Z"
+}
+```
+
 ## 🍽️ Gestão de Pratos
 
 ### Criar Prato

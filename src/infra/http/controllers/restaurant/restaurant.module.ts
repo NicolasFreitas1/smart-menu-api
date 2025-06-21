@@ -11,6 +11,10 @@ import { ListRestaurantsUseCase } from '@/domain/smart-menu/application/use-case
 import { GetRestaurantByIdUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/get-restaurant-by-id'
 import { EditRestaurantUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/edit-restaurant'
 import { DeleteRestaurantUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/delete-restaurant'
+import { ListRestaurantsWithAddressController } from './list-restaurants-with-address.controller'
+import { GetRestaurantByIdWithAddressController } from './get-restaurant-by-id-with-address.controller'
+import { ListRestaurantsWithAddressUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/list-restaurants-with-address'
+import { GetRestaurantByIdWithAddressUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/get-restaurant-by-id-with-address'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -20,6 +24,8 @@ import { DeleteRestaurantUseCase } from '@/domain/smart-menu/application/use-cas
     GetRestaurantByIdController,
     EditRestaurantController,
     DeleteRestaurantController,
+    ListRestaurantsWithAddressController,
+    GetRestaurantByIdWithAddressController,
   ],
   providers: [
     CreateRestaurantUseCase,
@@ -27,6 +33,8 @@ import { DeleteRestaurantUseCase } from '@/domain/smart-menu/application/use-cas
     GetRestaurantByIdUseCase,
     EditRestaurantUseCase,
     DeleteRestaurantUseCase,
+    ListRestaurantsWithAddressUseCase,
+    GetRestaurantByIdWithAddressUseCase,
   ],
 })
 export class RestaurantModule {}
