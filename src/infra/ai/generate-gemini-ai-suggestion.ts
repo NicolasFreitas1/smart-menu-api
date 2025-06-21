@@ -93,12 +93,15 @@ export class GenerateGeminiAISuggestion implements GenerateDishSuggestion {
               .describe('Query do PostgreSQL para ser executada'),
             params: z
               .array(z.string())
-              .describe('Parâmetros da query a ser executada'),
+              .optional()
+              .describe('Parâmetros da query a ser executada (opcional)'),
           }),
           execute: async ({ query, params }) => {
-            console.log(query);
-            console.log(params);
+            console.log('🔍 Query recebida:', query);
+            console.log('📝 Parâmetros recebidos:', params || 'Nenhum parâmetro');
 
+            // Por enquanto, vamos usar uma busca simples no Prisma
+            // em vez de executar a query SQL diretamente
             const result = await this.prisma.dish.findMany({
               where: { restaurantId },
               include: { categories: { include: { category: true } } },
