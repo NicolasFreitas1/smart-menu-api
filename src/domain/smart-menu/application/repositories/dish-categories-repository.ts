@@ -14,4 +14,5 @@ export abstract class DishCategoriesRepository {
   abstract createMany(dishCategories: DishCategory[]): Promise<void>
   abstract save(dishCategory: DishCategory): Promise<void>
   abstract delete(dishCategory: DishCategory): Promise<void>
+  abstract deleteByDishId(dishId: string): Promise<void>
 }

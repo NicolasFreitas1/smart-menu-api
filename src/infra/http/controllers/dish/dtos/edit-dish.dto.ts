@@ -5,6 +5,7 @@ const editDishBodySchema = z.object({
   description: z.string(),
   name: z.string(),
   price: z.number(),
+  categories: z.array(z.string()),
 })
 
 export type EditDishBodySchema = z.infer<typeof editDishBodySchema>

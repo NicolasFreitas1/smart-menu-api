@@ -24,13 +24,14 @@ export class EditDishController {
     @Param('dishId', ParseUUIDPipe) dishId: string,
     @Body(bodyValidationPipe) body: EditDishBodySchema,
   ) {
-    const { name, description, price } = body
+    const { name, description, price, categories } = body
 
     const result = await this.editDishUseCase.execute({
       description,
       dishId,
       name,
       price,
+      categories,
     })
 
     if (result.isLeft()) {

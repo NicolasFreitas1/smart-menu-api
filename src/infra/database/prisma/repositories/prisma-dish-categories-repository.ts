@@ -81,4 +81,10 @@ export class PrismaDishCategoriesRepository
       where: { id: dishCategory.id.toString() },
     })
   }
+
+  async deleteByDishId(dishId: string): Promise<void> {
+    await this.prisma.dishCategory.deleteMany({
+      where: { dishId },
+    })
+  }
 }
