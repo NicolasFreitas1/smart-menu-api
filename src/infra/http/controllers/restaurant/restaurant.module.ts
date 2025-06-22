@@ -15,6 +15,8 @@ import { ListRestaurantsWithAddressController } from './list-restaurants-with-ad
 import { GetRestaurantByIdWithAddressController } from './get-restaurant-by-id-with-address.controller'
 import { ListRestaurantsWithAddressUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/list-restaurants-with-address'
 import { GetRestaurantByIdWithAddressUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/get-restaurant-by-id-with-address'
+import { FindRestaurantsByProximityController } from './find-restaurants-by-proximity.controller'
+import { FindRestaurantsByProximityUseCase } from '@/domain/smart-menu/application/use-cases/restaurant/find-restaurants-by-proximity'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -26,6 +28,7 @@ import { GetRestaurantByIdWithAddressUseCase } from '@/domain/smart-menu/applica
     DeleteRestaurantController,
     ListRestaurantsWithAddressController,
     GetRestaurantByIdWithAddressController,
+    FindRestaurantsByProximityController,
   ],
   providers: [
     CreateRestaurantUseCase,
@@ -35,6 +38,7 @@ import { GetRestaurantByIdWithAddressUseCase } from '@/domain/smart-menu/applica
     DeleteRestaurantUseCase,
     ListRestaurantsWithAddressUseCase,
     GetRestaurantByIdWithAddressUseCase,
+    FindRestaurantsByProximityUseCase,
   ],
 })
 export class RestaurantModule {}

@@ -12,6 +12,8 @@ export class PrismaAddressMapper {
         state: raw.state,
         street: raw.street,
         number: raw.number,
+        latitude: raw.latitude,
+        longitude: raw.longitude,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -28,6 +30,8 @@ export class PrismaAddressMapper {
       number: address.number,
       state: address.state,
       street: address.street,
+      latitude: address.latitude,
+      longitude: address.longitude,
       createdAt: address.createdAt,
       updatedAt: address.updatedAt ? new Date(address.updatedAt) : undefined,
     }

@@ -3,6 +3,14 @@ import { Restaurant } from '../../enterprise/entities/restaurant'
 import { DataWithPagination } from '@/core/repositories/data-with-pagination'
 import { RestaurantWithAddress } from '../../enterprise/entities/value-objects/restaurant-with-address'
 
+export interface ProximityParams {
+  latitude: number
+  longitude: number
+  radiusInKm: number
+  page: number
+  perPage: number
+}
+
 export abstract class RestaurantsRepository {
   abstract findMany(
     params: PaginationParams,
@@ -10,6 +18,10 @@ export abstract class RestaurantsRepository {
 
   abstract findManyWithAddress(
     params: PaginationParams,
+  ): Promise<DataWithPagination<RestaurantWithAddress>>
+
+  abstract findManyByProximity(
+    params: ProximityParams,
   ): Promise<DataWithPagination<RestaurantWithAddress>>
 
   abstract findById(id: string): Promise<Restaurant | null>

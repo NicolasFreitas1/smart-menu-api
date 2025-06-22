@@ -33,6 +33,8 @@ export class PrismaRestaurantWithAddressMapper {
         country: raw.address.country,
         createdAt: raw.address.createdAt,
         updatedAt: raw.address.updatedAt,
+        latitude: raw.address.latitude,
+        longitude: raw.address.longitude,
       },
       new UniqueEntityId(raw.address.id),
     )

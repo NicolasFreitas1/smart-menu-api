@@ -13,6 +13,8 @@ export class RestaurantWithAddressPresenter {
         city: restaurantWithAddress.address.city,
         state: restaurantWithAddress.address.state,
         country: restaurantWithAddress.address.country,
+        latitude: restaurantWithAddress.address.latitude,
+        longitude: restaurantWithAddress.address.longitude,
       },
       createdAt: restaurantWithAddress.createdAt,
       updatedAt: restaurantWithAddress.updatedAt,

@@ -37,11 +37,14 @@ model Address {
   city      String   @map("nm_city") @db.VarChar(100)
   state     String   @map("nm_state") @db.VarChar(100)
   country   String   @map("nm_country") @db.VarChar(100)
+  latitude  Float?   @map("vl_latitude")
+  longitude Float?   @map("vl_longitude")
   createdAt DateTime @default(now()) @map("dt_created")
   updatedAt DateTime @updatedAt @map("dt_updated")
 
   restaurants Restaurant[]
 
+  @@index([latitude, longitude], name: "idx_address_coordinates")
   @@map("addresses")
 }
 
